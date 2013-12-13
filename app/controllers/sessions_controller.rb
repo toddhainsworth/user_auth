@@ -1,18 +1,17 @@
 class SessionsController < ApplicationController
   def new
-    @user = User.new
   end
 
   def create
-    @user = User.find_by(username: user_params[:username])
+    @user = User.find_by(username: params[:session][:username])
 
-    if @user && @user.authenticate(user_params[:password])
-      session[:user_id] = @user.id
+    if @user && @user.authenticate(params[:session][:password])
+      sign_in @user
       redirect_to root_path
     else
       render action: :new
     end
- end
+  end
 
   def destroy
     session[:user_id] = nil
@@ -21,7 +20,7 @@ class SessionsController < ApplicationController
 
   private
 
-  def user_params
-    params.require(:session).permit(:username, :password)
+  def sign_in(user)
+    session[:user_id] = user.id
   end
 end

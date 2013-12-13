@@ -9,7 +9,7 @@
 <body>
 
 <% if signed_in? %>
-  Signed in!
+  Signed in! Your name is <%= current_user.username %>
 <% else %>
   NOT signed in!
 <% end %>
